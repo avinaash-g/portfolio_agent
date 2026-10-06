@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ hero.title or "Terminal" }} | {{ user_name or "root" }}</title>
+  <meta name="description" content="{{ hero.tagline or 'Systems & Backend Terminal Portfolio' }}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['JetBrains Mono', 'Courier New', 'monospace'],
+          },
+          colors: {
+            brand: {
+              DEFAULT: '{{ primary_color }}',
+              hover: '{{ primary_hover }}',
+              soft: 'rgba({{ primary_rgb }}, 0.15)',
+              border: 'rgba({{ primary_rgb }}, 0.35)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --primary: {{ primary_color }};
+      --primary-rgb: {{ primary_rgb }};
+      --bg-terminal: #090d16;
+      --text-terminal: #e2e8f0;
+    }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: #030712;
+      color: #e2e8f0;
+    }
+    .text-brand { color: var(--primary); }
+    .bg-brand { background-color: var(--primary); }
+    .border-brand { border-color: var(--primary); }
+    .prompt-cursor {
+      display: inline-block;
+      width: 0.55rem;
+      height: 1.1rem;
+      background: var(--primary);
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .terminal-window {
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+    }
+  </style>
+</head>
+<body class="terminal-minimalist antialiased selection:bg-brand selection:text-black min-h-screen py-8 sm:py-12 px-4 sm:px-6 flex flex-col items-center justify-center">
+
+  <div class="terminal-window w-full max-w-5xl rounded-xl border border-zinc-800 bg-[#0b0f19] overflow-hidden text-xs sm:text-sm">
+    
+    <!-- Terminal Header / Titlebar -->
+    <div class="terminal-header h-10 bg-[#111827] px-4 border-b border-zinc-800 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+        <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+        <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+      </div>
+      <div class="text-[11px] font-mono text-zinc-400 font-semibold tracking-wide flex items-center gap-2">
+        <span class="text-brand font-bold">&lambda;</span>
+        <span>{{ (user_name or "dev")|lower|replace(' ', '-') }}@workstation: ~/portfolio</span>
+      </div>
+      <div class="text-[10px] text-zinc-500 font-mono">
+        bash &bull; 80x24
+      </div>
+    </div>
+
+    <!-- Terminal Body -->
+    <div class="terminal-body p-6 sm:p-8 space-y-8 font-mono leading-relaxed">
+
+      <!-- Command 1: Identity & Hero -->
+      <div class="terminal-command space-y-2">
+        <div class="flex items-center gap-2 text-zinc-300">
+          <span class="text-brand font-bold">$</span>
+          <span class="text-emerald-400 font-semibold">whoami --verbose</span>
+        </div>
+        <div class="p-4 rounded-lg bg-[#070a12] border border-zinc-800/90 space-y-2 text-zinc-300">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <span class="text-base sm:text-lg font-bold text-white">{{ user_name or "Engineer" }}</span>
+            <span class="px-2 py-0.5 rounded bg-zinc-800 text-brand font-semibold text-xs border border-zinc-700">
+              ROLE: {{ hero.title or "Systems / Backend Developer" }}
+            </span>
+          </div>
+          <p class="text-zinc-400 text-xs sm:text-sm leading-normal">
+            {{ hero.tagline or "Architecting resilient systems and high-throughput backends." }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Command 2: About / README -->
+      <div class="terminal-command space-y-2">
+        <div class="flex items-center gap-2 text-zinc-300">
+          <span class="text-brand font-bold">$</span>
+          <span class="text-emerald-400 font-semibold">cat ./about_developer.md</span>
+        </div>
+        <div class="p-4 rounded-lg bg-[#070a12] border border-zinc-800/90 text-zinc-300 space-y-2">
+          <div class="text-zinc-500 text-xs"># Executive Summary & Architecture Philosophy</div>
+          <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed whitespace-pre-line">
+            {{ about }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Command 3: Featured Projects -->
+      <div class="terminal-command space-y-3">
+        <div class="flex items-center gap-2 text-zinc-300">
+          <span class="text-brand font-bold">$</span>
+          <span class="text-emerald-400 font-semibold">ls -la ./featured_projects/</span>
+        </div>
+        <div class="space-y-4">
+          {% for proj in featured_projects %}
+          <div class="p-4 rounded-lg bg-[#070a12] border border-zinc-800/90 space-y-2.5">
+            <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-zinc-800 pb-2">
+              <span class="text-white font-bold text-sm sm:text-base flex items-center gap-2">
+                <span class="text-brand font-bold">[FILE]</span>
+                <span>{{ proj.name }}</span>
+              </span>
+              {% if proj.role %}
+              <span class="text-[11px] text-zinc-400 font-mono">role: {{ proj.role }}</span>
+              {% endif %}
+            </div>
+
+            <p class="text-zinc-300 text-xs leading-relaxed">
+              {{ proj.overview }}
+            </p>
+
+            {% if proj.solution %}
+            <div class="text-xs text-zinc-400 bg-zinc-900/60 p-2.5 rounded border border-zinc-800/60">
+              <span class="text-emerald-400 font-bold">&gt;&gt; STDOUT:</span> {{ proj.solution }}
+            </div>
+            {% endif %}
+
+            {% if proj.key_features %}
+            <div class="text-xs text-zinc-400 space-y-0.5 pt-1">
+              {% for feat in proj.key_features %}
+              <div class="flex items-start gap-1.5">
+                <span class="text-brand font-bold">+</span>
+                <span>{{ feat }}</span>
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs">
+              <div class="flex flex-wrap gap-1 text-[11px]">
+                {% for tech in proj.technologies %}
+                <span class="px-1.5 py-0.5 rounded bg-zinc-800/80 text-zinc-300 border border-zinc-700/60">
+                  {{ tech }}
+                </span>
+                {% endfor %}
+              </div>
+              <div class="flex items-center gap-2">
+                {% if proj.links and proj.links.demo %}
+                <a href="{{ proj.links.demo }}" target="_blank" class="px-2.5 py-1 rounded bg-brand text-black font-bold text-xs hover:opacity-90 transition">
+                  [run demo]
+                </a>
+                {% endif %}
+                {% if proj.links and proj.links.github %}
+                <a href="{{ proj.links.github }}" target="_blank" class="px-2.5 py-1 rounded bg-zinc-800 text-zinc-200 text-xs hover:bg-zinc-700 transition">
+                  [git clone]
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Command 4: Skills Matrix -->
+      <div class="terminal-command space-y-2">
+        <div class="flex items-center gap-2 text-zinc-300">
+          <span class="text-brand font-bold">$</span>
+          <span class="text-emerald-400 font-semibold">./inspect_skills.sh --all</span>
+        </div>
+        <div class="p-4 rounded-lg bg-[#070a12] border border-zinc-800/90 space-y-3">
+          {% for cat, slist in skills.items() %}
+          <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-3 text-xs">
+            <span class="font-bold text-brand w-36 shrink-0 uppercase tracking-wide">[{{ cat }}]</span>
+            <span class="text-zinc-300">{{ slist | join('  |  ') }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Command 5: Experience Log -->
+      {% if experience %}
+      <div class="terminal-command space-y-2">
+        <div class="flex items-center gap-2 text-zinc-300">
+          <span class="text-brand font-bold">$</span>
+          <span class="text-emerald-400 font-semibold">journalctl -u career-experience.service --no-pager</span>
+        </div>
+        <div class="p-4 rounded-lg bg-[#070a12] border border-zinc-800/90 space-y-3 text-xs text-zinc-300">
+          {% for exp in experience %}
+          <div class="border-l border-zinc-700 pl-3 space-y-1">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <span class="font-bold text-white">{{ exp.company }} &bull; {{ exp.role }}</span>
+              <span class="text-zinc-500 text-[11px]">{{ exp.duration }}</span>
+            </div>
+            {% if exp.highlights %}
+            <p class="text-zinc-400">{{ exp.highlights[0] }}</p>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Command 6: Ping Contact -->
+      <div class="terminal-command space-y-2">
+        <div class="flex items-center gap-2 text-zinc-300">
+          <span class="text-brand font-bold">$</span>
+          <span class="text-emerald-400 font-semibold">ping -c 1 recruiter@contact</span>
+        </div>
+        <div class="p-4 rounded-lg bg-[#070a12] border border-zinc-800/90 space-y-2 text-xs">
+          <div class="text-emerald-400">64 bytes from mailto: {{ contact.email or "available upon request" }} &bull; ttl=64 time=0.42ms</div>
+          <div class="flex flex-wrap gap-4 pt-1 text-zinc-400">
+            {% if contact.email %}
+            <a href="mailto:{{ contact.email }}" class="text-white hover:text-brand underline font-semibold">
+              Open Mail Client &rarr;
+            </a>
+            {% endif %}
+            {% if contact.github %}
+            <a href="{{ contact.github }}" target="_blank" class="hover:text-brand">git: {{ contact.github }}</a>
+            {% endif %}
+            {% if contact.linkedin %}
+            <a href="{{ contact.linkedin }}" target="_blank" class="hover:text-brand">in: {{ contact.linkedin }}</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Prompt with Blinking Cursor -->
+      <div class="pt-2 flex items-center gap-2 text-zinc-400">
+        <span class="text-brand font-bold">$</span>
+        <span class="text-zinc-500">echo "Ready for production deployment"</span>
+        <span class="prompt-cursor"></span>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ hero.title or "Case Study Portfolio" }} | {{ user_name or "Candidate" }}</title>
+  <meta name="description" content="{{ hero.tagline or 'Chronological Engineering Story' }}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Newsreader', 'Georgia', 'serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              DEFAULT: '{{ primary_color }}',
+              hover: '{{ primary_hover }}',
+              soft: 'rgba({{ primary_rgb }}, 0.08)',
+              border: 'rgba({{ primary_rgb }}, 0.25)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --primary: {{ primary_color }};
+      --primary-rgb: {{ primary_rgb }};
+      --primary-hover: {{ primary_hover }};
+      --bg-page: #ffffff;
+    }
+    body { font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: #1c1917; }
+    .text-brand { color: var(--primary); }
+    .bg-brand { background-color: var(--primary); }
+    .border-brand { border-color: var(--primary); }
+    .bg-brand-soft { background-color: rgba(var(--primary-rgb), 0.07); }
+    .border-brand-subtle { border-color: rgba(var(--primary-rgb), 0.25); }
+    .story-timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 1rem;
+      width: 2px;
+      background: #e7e5e4;
+    }
+    .timeline-node {
+      position: absolute;
+      left: 0.65rem;
+      width: 0.85rem;
+      height: 0.85rem;
+      border-radius: 9999px;
+      background: var(--primary);
+      border: 3px solid #ffffff;
+      box-shadow: 0 0 0 1px #d6d3d1;
+    }
+    .case-study-card {
+      border: 1px solid #e7e5e4;
+      border-radius: 1rem;
+      background: #fafaf9;
+      transition: all 0.2s ease-in-out;
+    }
+    .case-study-card:hover {
+      border-color: rgba(var(--primary-rgb), 0.4);
+      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.07);
+    }
+  </style>
+</head>
+<body class="case-study-story antialiased min-h-screen flex flex-col selection:bg-stone-900 selection:text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-stone-200">
+    <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="w-2.5 h-2.5 rounded-full bg-brand"></span>
+        <span class="font-bold text-sm tracking-tight text-stone-900">{{ user_name or "Engineer" }}</span>
+        <span class="text-xs font-mono px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 border border-stone-200">Case-Study Story</span>
+      </div>
+      <nav class="hidden sm:flex items-center space-x-6 text-xs font-medium text-stone-600">
+        <a href="#case-studies" class="hover:text-stone-900 transition">Case Studies</a>
+        <a href="#timeline" class="hover:text-stone-900 transition">Career Timeline</a>
+        <a href="#skills" class="hover:text-stone-900 transition">Competencies</a>
+        <a href="#contact" class="hover:text-stone-900 transition">Contact</a>
+      </nav>
+      {% if contact.email %}
+      <a href="mailto:{{ contact.email }}" class="px-3.5 py-1.5 rounded-md bg-stone-900 text-white text-xs font-medium hover:bg-stone-800 transition">
+        Inquire
+      </a>
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- Narrative Main Content -->
+  <main class="max-w-4xl mx-auto px-6 py-12 space-y-20 flex-1 w-full">
+
+    <!-- Section 1: Hero & Editorial Narrative -->
+    <section class="story-narrative pt-6 space-y-6">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-soft border border-brand-subtle text-brand">
+        {{ hero.title or "Software Developer" }}
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-serif font-medium text-stone-950 tracking-tight leading-snug">
+        {{ hero.tagline or "Building thoughtfully engineered software systems." }}
+      </h1>
+      <div class="text-base sm:text-lg text-stone-700 leading-relaxed font-serif italic border-l-2 border-stone-300 pl-4 py-1">
+        &ldquo;{{ about }}&rdquo;
+      </div>
+    </section>
+
+    <!-- Section 2: Deep Dive Case Studies -->
+    <section id="case-studies" class="space-y-10">
+      <div class="border-b border-stone-200 pb-4">
+        <span class="text-[11px] font-mono text-stone-400 uppercase tracking-widest">Part I</span>
+        <h2 class="text-2xl font-bold text-stone-950 tracking-tight mt-1">Deep Dive Case Studies</h2>
+        <p class="text-xs text-stone-500 mt-1">Structured using the STAR framework (Situation, Task, Approach, Results).</p>
+      </div>
+
+      <div class="space-y-8">
+        {% for proj in featured_projects %}
+        <article class="case-study-card p-6 sm:p-8 space-y-6">
+          <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-stone-200/80 pb-4">
+            <div>
+              <span class="text-[10px] font-mono font-semibold text-brand uppercase tracking-wider">Case Study #{{ loop.index }}</span>
+              <h3 class="text-2xl font-bold text-stone-900 mt-0.5">{{ proj.name }}</h3>
+            </div>
+            {% if proj.role %}
+            <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-stone-100 text-stone-700 border border-stone-200">
+              Role: {{ proj.role }}
+            </span>
+            {% endif %}
+          </div>
+
+          <!-- Problem & Solution Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 rounded-lg bg-white border border-stone-200/80 space-y-1.5">
+              <span class="text-[11px] font-mono font-bold text-amber-700 uppercase tracking-wide">The Challenge</span>
+              <p class="text-xs text-stone-600 leading-relaxed">{{ proj.problem or proj.overview }}</p>
+            </div>
+            <div class="p-4 rounded-lg bg-white border border-stone-200/80 space-y-1.5">
+              <span class="text-[11px] font-mono font-bold text-emerald-700 uppercase tracking-wide">The Technical Solution</span>
+              <p class="text-xs text-stone-600 leading-relaxed">{{ proj.solution }}</p>
+            </div>
+          </div>
+
+          <!-- Key Features -->
+          {% if proj.key_features %}
+          <div class="space-y-2">
+            <span class="text-xs font-bold text-stone-900 uppercase tracking-wider">Architectural Highlights</span>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-700">
+              {% for feat in proj.key_features %}
+              <li class="flex items-start gap-2 bg-white/60 p-2.5 rounded border border-stone-200/60">
+                <span class="text-brand font-bold">&check;</span>
+                <span>{{ feat }}</span>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+          <!-- Tech Stack & Links -->
+          <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-stone-200/80">
+            <div class="flex flex-wrap gap-1.5">
+              {% for tech in proj.technologies %}
+              <span class="px-2.5 py-1 rounded text-xs font-mono bg-stone-200/80 text-stone-800 font-medium">
+                {{ tech }}
+              </span>
+              {% endfor %}
+            </div>
+            <div class="flex items-center gap-3">
+              {% if proj.links and proj.links.demo %}
+              <a href="{{ proj.links.demo }}" target="_blank" class="px-3.5 py-1.5 rounded bg-stone-900 text-white text-xs font-medium hover:bg-stone-800 transition">
+                Live Deployment &rarr;
+              </a>
+              {% endif %}
+              {% if proj.links and proj.links.github %}
+              <a href="{{ proj.links.github }}" target="_blank" class="px-3.5 py-1.5 rounded bg-white border border-stone-300 text-stone-700 text-xs font-medium hover:bg-stone-100 transition">
+                View Source Code
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Section 3: Chronological Timeline (Experience & Education) -->
+    <section id="timeline" class="space-y-8">
+      <div class="border-b border-stone-200 pb-4">
+        <span class="text-[11px] font-mono text-stone-400 uppercase tracking-widest">Part II</span>
+        <h2 class="text-2xl font-bold text-stone-950 tracking-tight mt-1">Chronological Timeline</h2>
+        <p class="text-xs text-stone-500 mt-1">Career trajectory, impact milestones, and formal education.</p>
+      </div>
+
+      <div class="relative story-timeline pl-10 space-y-10">
+        {% for exp in experience %}
+        <div class="timeline-item relative space-y-2">
+          <div class="timeline-node"></div>
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h4 class="text-base font-bold text-stone-900">{{ exp.role }} &bull; {{ exp.company }}</h4>
+            <span class="text-xs font-mono text-stone-500">{{ exp.duration }}</span>
+          </div>
+          {% if exp.location %}
+          <div class="text-xs text-stone-400 font-mono">{{ exp.location }}</div>
+          {% endif %}
+          {% if exp.highlights %}
+          <ul class="space-y-1.5 pt-1 text-xs text-stone-600 leading-relaxed">
+            {% for hl in exp.highlights %}
+            <li class="flex items-start gap-2">
+              <span class="text-stone-400">&bull;</span>
+              <span>{{ hl }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        {% endfor %}
+
+        {% for edu in education %}
+        <div class="timeline-item relative space-y-1 pt-4">
+          <div class="timeline-node bg-stone-400"></div>
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h4 class="text-sm font-bold text-stone-800">{{ edu.degree }}</h4>
+            <span class="text-xs font-mono text-stone-500">{{ edu.year or "" }}</span>
+          </div>
+          <div class="text-xs text-stone-600">{{ edu.institution }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Section 4: Skills Matrix -->
+    <section id="skills" class="space-y-6">
+      <div class="border-b border-stone-200 pb-4">
+        <span class="text-[11px] font-mono text-stone-400 uppercase tracking-widest">Part III</span>
+        <h2 class="text-2xl font-bold text-stone-950 tracking-tight mt-1">Technical Competencies</h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {% for cat_name, skill_list in skills.items() %}
+        <div class="p-4 rounded-xl bg-stone-50 border border-stone-200 space-y-2">
+          <h4 class="text-xs font-mono font-bold text-stone-900 uppercase">{{ cat_name }}</h4>
+          <div class="flex flex-wrap gap-1.5">
+            {% for s in skill_list %}
+            <span class="px-2.5 py-1 rounded text-xs bg-white text-stone-800 border border-stone-200 font-medium">
+              {{ s }}
+            </span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Section 5: Contact Footer -->
+    <section id="contact" class="p-8 rounded-2xl bg-stone-900 text-white space-y-4 text-center">
+      <h3 class="text-xl font-bold">Initiate Discussion</h3>
+      <p class="text-xs text-stone-300 max-w-md mx-auto leading-relaxed">
+        Currently reviewing technical challenges and high-ownership engineering roles.
+      </p>
+      {% if contact.email %}
+      <div class="pt-2">
+        <a href="mailto:{{ contact.email }}" class="inline-flex px-5 py-2.5 rounded-lg bg-white text-stone-950 font-semibold text-xs hover:bg-stone-100 transition shadow-xs">
+          {{ contact.email }}
+        </a>
+      </div>
+      {% endif %}
+      <div class="flex justify-center gap-4 text-xs font-mono text-stone-400 pt-3">
+        {% if contact.github %}<a href="{{ contact.github }}" target="_blank" class="hover:text-white transition">GitHub</a>{% endif %}
+        {% if contact.linkedin %}<a href="{{ contact.linkedin }}" target="_blank" class="hover:text-white transition">LinkedIn</a>{% endif %}
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-stone-200 py-6 px-6 text-center text-xs text-stone-500">
+    &copy; {{ user_name or "Candidate" }} &bull; Architecture: Chronological Case-Study Story
+  </footer>
+
+</body>
+</html>

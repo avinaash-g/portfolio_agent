@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ hero.title or "Professional Portfolio" }} | {{ user_name or "Candidate" }}</title>
+  <meta name="description" content="{{ hero.tagline or 'Professional Portfolio' }}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              DEFAULT: '{{ primary_color }}',
+              hover: '{{ primary_hover }}',
+              soft: 'rgba({{ primary_rgb }}, 0.05)',
+              border: 'rgba({{ primary_rgb }}, 0.2)',
+              light: 'rgba({{ primary_rgb }}, 0.9)'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --primary: {{ primary_color }};
+      --primary-rgb: {{ primary_rgb }};
+      --primary-hover: {{ primary_hover }};
+      --bg-page: {{ bg_color if bg_color not in ['#090d16', '#09090b', '#000000'] else '#ffffff' }};
+      --surface-card: #ffffff;
+      --border-subtle: #e4e4e7;
+    }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-page); color: #18181b; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+    .text-brand { color: var(--primary); }
+    .bg-brand { background-color: var(--primary); }
+    .border-brand { border-color: var(--primary); }
+    .border-brand-subtle { border-color: rgba(var(--primary-rgb), 0.2); }
+    .bg-brand-soft { background-color: rgba(var(--primary-rgb), 0.06); }
+    .hover-bg-brand-hover:hover { background-color: var(--primary-hover); }
+    .hover-text-brand:hover { color: var(--primary); }
+    .shadow-editorial { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04); }
+    .shadow-editorial-card { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03), 0 1px 2px -1px rgba(0, 0, 0, 0.03); }
+    .shadow-editorial-card:hover { box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.06); }
+  </style>
+</head>
+<body class="text-zinc-900 antialiased selection:bg-zinc-900 selection:text-white bg-white">
+
+  <!-- Navigation -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-zinc-200">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#" class="font-semibold text-base text-zinc-900 tracking-tight flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-brand"></span>
+        {{ user_name or hero.title or "Portfolio" }}
+      </a>
+      <nav class="hidden md:flex items-center space-x-6 text-xs font-medium text-zinc-600">
+        <a href="#about" class="hover-text-brand transition">About</a>
+        <a href="#skills" class="hover-text-brand transition">Skills</a>
+        <a href="#projects" class="hover-text-brand transition">Projects</a>
+        {% if experience %}<a href="#experience" class="hover-text-brand transition">Experience</a>{% endif %}
+        {% if education %}<a href="#education" class="hover-text-brand transition">Education</a>{% endif %}
+        <a href="#contact" class="hover-text-brand transition">Contact</a>
+      </nav>
+      {% if contact.email %}
+      <a href="mailto:{{ contact.email }}" class="inline-flex items-center justify-center px-3.5 py-1.5 rounded-md bg-zinc-900 text-white text-xs font-medium hover:bg-zinc-800 transition shadow-editorial">
+        Get in touch
+      </a>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 py-14 space-y-24">
+
+    <!-- Hero Section -->
+    <section class="py-12 md:py-20 text-center max-w-3xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-zinc-100 border border-zinc-200 text-zinc-700 mb-6">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+        {{ hero.title or "Professional Portfolio" }}
+      </div>
+      <h1 class="text-4xl md:text-5xl font-bold text-zinc-950 tracking-tight leading-tight">
+        {{ hero.tagline or "Delivering high-impact software solutions" }}
+      </h1>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href="#projects" class="px-5 py-2.5 rounded-md bg-zinc-900 text-white text-xs font-medium hover:bg-zinc-800 transition shadow-editorial">
+          Explore Projects
+        </a>
+        <a href="#contact" class="px-5 py-2.5 rounded-md bg-white border border-zinc-300 text-zinc-700 text-xs font-medium hover:bg-zinc-50 transition shadow-editorial">
+          Contact Me
+        </a>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="scroll-mt-24">
+      <div class="border-t border-zinc-200 pt-12">
+        <h2 class="text-xs font-semibold tracking-wider text-zinc-400 uppercase mb-2">Background</h2>
+        <h3 class="text-2xl font-bold text-zinc-900 mb-6">About Me</h3>
+        <div class="prose max-w-none text-zinc-600 leading-relaxed space-y-4 text-sm">
+          {{ about | replace('\n', '<br>') | safe }}
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="scroll-mt-24">
+      <div class="border-t border-zinc-200 pt-12">
+        <h2 class="text-xs font-semibold tracking-wider text-zinc-400 uppercase mb-2">Capabilities</h2>
+        <h3 class="text-2xl font-bold text-zinc-900 mb-8">Technical Expertise</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {% for category, items in skills.items() %}
+          <div class="bg-white p-6 rounded-xl border border-zinc-200 shadow-editorial-card">
+            <h4 class="font-semibold text-zinc-900 text-sm mb-4 flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+              {{ category }}
+            </h4>
+            <div class="flex flex-wrap gap-2">
+              {% for skill in items %}
+              <span class="px-2.5 py-1 bg-zinc-100 text-zinc-800 text-xs font-medium rounded-md border border-zinc-200">
+                {{ skill }}
+              </span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Projects (Case Studies) -->
+    <section id="projects" class="scroll-mt-24">
+      <div class="border-t border-zinc-200 pt-12">
+        <h2 class="text-xs font-semibold tracking-wider text-zinc-400 uppercase mb-2">Selected Work</h2>
+        <h3 class="text-2xl font-bold text-zinc-900 mb-8">Featured Case Studies</h3>
+
+        <div class="space-y-10">
+          {% for p in featured_projects %}
+          <article class="bg-white rounded-xl border border-zinc-200 p-8 shadow-editorial-card transition">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <div>
+                <h4 class="text-xl font-bold text-zinc-950">{{ p.name }}</h4>
+                {% if p.role %}<p class="text-xs font-medium text-zinc-500 mt-1">Role: <span class="text-zinc-800 font-semibold">{{ p.role }}</span></p>{% endif %}
+              </div>
+              <div class="flex items-center gap-2">
+                {% if p.links.github %}
+                <a href="{{ p.links.github }}" target="_blank" rel="noopener" class="inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-md border border-zinc-300 text-zinc-700 hover:bg-zinc-50 transition">
+                  GitHub &rarr;
+                </a>
+                {% endif %}
+                {% if p.links.demo %}
+                <a href="{{ p.links.demo }}" target="_blank" rel="noopener" class="inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-md bg-zinc-900 text-white hover:bg-zinc-800 transition shadow-editorial">
+                  Live Demo &rarr;
+                </a>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Overview -->
+            <p class="text-zinc-600 mb-6 text-sm leading-relaxed">{{ p.overview }}</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-zinc-50 p-6 rounded-lg border border-zinc-100 mb-6">
+              {% if p.problem %}
+              <div>
+                <h5 class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-2">The Problem</h5>
+                <p class="text-xs text-zinc-700 leading-relaxed">{{ p.problem }}</p>
+              </div>
+              {% endif %}
+              <div>
+                <h5 class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-2">Technical Solution</h5>
+                <p class="text-xs text-zinc-700 leading-relaxed">{{ p.solution }}</p>
+              </div>
+            </div>
+
+            <!-- Key Features -->
+            {% if p.key_features %}
+            <div class="mb-6">
+              <h5 class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 mb-3">Key Highlights</h5>
+              <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-zinc-600">
+                {% for f in p.key_features %}
+                <li class="flex items-start">
+                  <span class="text-brand mr-2 font-bold">&check;</span>
+                  <span>{{ f }}</span>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+
+            <!-- Tech stack pills -->
+            <div class="flex flex-wrap gap-2 pt-4 border-t border-zinc-100">
+              {% for tech in p.technologies %}
+              <span class="text-xs px-2 py-0.5 rounded bg-zinc-100 text-zinc-800 font-mono font-medium border border-zinc-200">
+                {{ tech }}
+              </span>
+              {% endfor %}
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+
+        <!-- Other Projects -->
+        {% if other_projects %}
+        <div class="mt-16">
+          <h4 class="text-base font-bold text-zinc-900 mb-6">Additional Projects</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for op in other_projects %}
+            <div class="bg-white p-6 rounded-xl border border-zinc-200 shadow-editorial-card flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <h5 class="font-semibold text-zinc-900 text-sm">{{ op.name }}</h5>
+                  <div class="flex gap-2 text-xs">
+                    {% if op.links and op.links.github %}<a href="{{ op.links.github }}" target="_blank" class="text-zinc-600 hover:text-zinc-900 transition">Code &rarr;</a>{% endif %}
+                    {% if op.links and op.links.demo %}<a href="{{ op.links.demo }}" target="_blank" class="text-zinc-900 font-medium hover:underline">Demo &rarr;</a>{% endif %}
+                  </div>
+                </div>
+                <p class="text-xs text-zinc-600 mb-4 leading-relaxed">{{ op.summary }}</p>
+              </div>
+              <div class="flex flex-wrap gap-1.5 pt-3 border-t border-zinc-100">
+                {% for t in op.technologies %}
+                <span class="text-[11px] px-2 py-0.5 rounded bg-zinc-100 text-zinc-700 font-mono border border-zinc-200">{{ t }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <!-- Experience Section (if any) -->
+    {% if experience %}
+    <section id="experience" class="scroll-mt-24">
+      <div class="border-t border-zinc-200 pt-12">
+        <h2 class="text-xs font-semibold tracking-wider text-zinc-400 uppercase mb-2">Track Record</h2>
+        <h3 class="text-2xl font-bold text-zinc-900 mb-8">Professional Experience</h3>
+        <div class="space-y-6">
+          {% for exp in experience %}
+          <div class="bg-white p-6 rounded-xl border border-zinc-200 shadow-editorial-card">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-1 mb-2">
+              <h4 class="text-base font-bold text-zinc-900">{{ exp.role }} <span class="text-zinc-500 font-normal">@ {{ exp.company }}</span></h4>
+              <span class="text-xs font-medium text-zinc-500 font-mono">{{ exp.duration }}</span>
+            </div>
+            {% if exp.highlights %}
+            <ul class="list-disc list-inside text-xs text-zinc-600 space-y-1.5 mt-3 leading-relaxed">
+              {% for h in exp.highlights %}
+              <li>{{ h }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- Education & Achievements -->
+    {% if education or achievements %}
+    <section id="education" class="scroll-mt-24">
+      <div class="border-t border-zinc-200 pt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+        {% if education %}
+        <div>
+          <h2 class="text-xs font-semibold tracking-wider text-zinc-400 uppercase mb-2">Education</h2>
+          <h3 class="text-2xl font-bold text-zinc-900 mb-6">Academic Background</h3>
+          <div class="space-y-4">
+            {% for edu in education %}
+            <div class="bg-white p-5 rounded-xl border border-zinc-200 shadow-editorial-card">
+              <h4 class="font-bold text-zinc-900 text-sm">{{ edu.degree }}</h4>
+              <p class="text-xs text-zinc-600 mt-0.5">{{ edu.institution }}</p>
+              {% if edu.year %}<p class="text-[11px] text-zinc-400 mt-1 font-mono">{{ edu.year }}</p>{% endif %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if achievements %}
+        <div>
+          <h2 class="text-xs font-semibold tracking-wider text-zinc-400 uppercase mb-2">Recognitions</h2>
+          <h3 class="text-2xl font-bold text-zinc-900 mb-6">Key Achievements</h3>
+          <div class="space-y-4">
+            {% for ach in achievements %}
+            <div class="bg-white p-5 rounded-xl border border-zinc-200 shadow-editorial-card">
+              <h4 class="font-bold text-zinc-900 text-sm">{{ ach.title }}</h4>
+              {% if ach.description %}<p class="text-xs text-zinc-600 mt-1 leading-relaxed">{{ ach.description }}</p>{% endif %}
+              {% if ach.year %}<p class="text-[11px] text-zinc-400 mt-1 font-mono">{{ ach.year }}</p>{% endif %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- Contact Section -->
+    <section id="contact" class="scroll-mt-24 pb-16">
+      <div class="border-t border-zinc-200 pt-12 text-center max-w-xl mx-auto">
+        <h2 class="text-xs font-semibold tracking-wider text-zinc-400 uppercase mb-2">Get In Touch</h2>
+        <h3 class="text-3xl font-bold text-zinc-950 mb-3">Let's Connect</h3>
+        <p class="text-zinc-600 text-xs mb-8 leading-relaxed">Feel free to reach out for new opportunities, engineering discussions, or collaborations.</p>
+        
+        <div class="flex flex-wrap justify-center gap-3">
+          {% if contact.email %}
+          <a href="mailto:{{ contact.email }}" class="px-4 py-2 rounded-md bg-zinc-900 text-white text-xs font-medium hover:bg-zinc-800 transition shadow-editorial">
+            {{ contact.email }}
+          </a>
+          {% endif %}
+          {% if contact.github %}
+          <a href="{{ contact.github }}" target="_blank" rel="noopener" class="px-4 py-2 rounded-md bg-white border border-zinc-300 text-zinc-700 text-xs font-medium hover:bg-zinc-50 transition shadow-editorial">
+            GitHub
+          </a>
+          {% endif %}
+          {% if contact.linkedin %}
+          <a href="{{ contact.linkedin }}" target="_blank" rel="noopener" class="px-4 py-2 rounded-md bg-white border border-zinc-300 text-zinc-700 text-xs font-medium hover:bg-zinc-50 transition shadow-editorial">
+            LinkedIn
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-zinc-200 py-8 text-center text-xs text-zinc-400">
+    Generated by Automated Portfolio Builder Agent &bull; {{ theme_name }} Theme &bull; Recruiter-ready static build
+  </footer>
+
+</body>
+</html>

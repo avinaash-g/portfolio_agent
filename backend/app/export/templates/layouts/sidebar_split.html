@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ hero.title or "Portfolio" }} | {{ user_name or "Candidate" }}</title>
+  <meta name="description" content="{{ hero.tagline or 'Developer Portfolio' }}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              DEFAULT: '{{ primary_color }}',
+              hover: '{{ primary_hover }}',
+              soft: 'rgba({{ primary_rgb }}, 0.08)',
+              border: 'rgba({{ primary_rgb }}, 0.25)',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --primary: {{ primary_color }};
+      --primary-rgb: {{ primary_rgb }};
+      --primary-hover: {{ primary_hover }};
+      --bg-page: #ffffff;
+    }
+    body { font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: #0f172a; }
+    .text-brand { color: var(--primary); }
+    .bg-brand { background-color: var(--primary); }
+    .border-brand { border-color: var(--primary); }
+    .bg-brand-soft { background-color: rgba(var(--primary-rgb), 0.08); }
+    .border-brand-subtle { border-color: rgba(var(--primary-rgb), 0.25); }
+    .nav-indicator {
+      transition: width 0.2s ease, background-color 0.2s ease;
+    }
+    .nav-link:hover .nav-indicator {
+      width: 2.5rem;
+      background-color: var(--primary);
+    }
+  </style>
+</head>
+<body class="sidebar-split-layout antialiased selection:bg-slate-900 selection:text-white bg-white min-h-screen">
+
+  <div class="split-container max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex flex-col lg:flex-row justify-between gap-12 lg:gap-16">
+
+    <!-- Fixed Left Sidebar (Desktop sticky) -->
+    <aside class="sidebar-fixed lg:sticky lg:top-0 lg:h-screen lg:w-5/12 flex flex-col justify-between py-12 lg:py-16 space-y-8">
+      <div class="space-y-6">
+        <div>
+          <span class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-brand-soft border border-brand-subtle text-brand mb-3">
+            <span class="w-2 h-2 rounded-full bg-brand"></span>
+            Minimalist Split-Screen
+          </span>
+          <h1 class="text-4xl sm:text-5xl font-black text-slate-950 tracking-tight">
+            {{ user_name or "Engineer" }}
+          </h1>
+          <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mt-2">
+            {{ hero.title or "Software Developer" }}
+          </h2>
+        </div>
+
+        <p class="text-sm text-slate-600 leading-relaxed max-w-sm">
+          {{ hero.tagline or about }}
+        </p>
+
+        <!-- On-Page Sticky Navigation Links -->
+        <nav class="hidden lg:flex flex-col space-y-3.5 pt-6 text-xs font-mono uppercase tracking-wider text-slate-500">
+          <a href="#about" class="nav-link flex items-center gap-3 py-1 hover:text-slate-950 transition">
+            <span class="nav-indicator w-6 h-px bg-slate-300"></span>
+            <span>01 // About</span>
+          </a>
+          <a href="#projects" class="nav-link flex items-center gap-3 py-1 hover:text-slate-950 transition">
+            <span class="nav-indicator w-6 h-px bg-slate-300"></span>
+            <span>02 // Case Studies</span>
+          </a>
+          {% if experience %}
+          <a href="#experience" class="nav-link flex items-center gap-3 py-1 hover:text-slate-950 transition">
+            <span class="nav-indicator w-6 h-px bg-slate-300"></span>
+            <span>03 // Experience</span>
+          </a>
+          {% endif %}
+          <a href="#skills" class="nav-link flex items-center gap-3 py-1 hover:text-slate-950 transition">
+            <span class="nav-indicator w-6 h-px bg-slate-300"></span>
+            <span>04 // Skills</span>
+          </a>
+          <a href="#contact" class="nav-link flex items-center gap-3 py-1 hover:text-slate-950 transition">
+            <span class="nav-indicator w-6 h-px bg-slate-300"></span>
+            <span>05 // Contact</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Left Sidebar Footer: Socials & Email -->
+      <div class="space-y-4 pt-6 border-t border-slate-200/80">
+        <div class="flex items-center gap-4 text-xs font-mono text-slate-500">
+          {% if contact.email %}
+          <a href="mailto:{{ contact.email }}" class="hover:text-slate-900 transition flex items-center gap-1.5 font-semibold text-slate-800">
+            <span>&bull;</span>
+            <span>{{ contact.email }}</span>
+          </a>
+          {% endif %}
+          {% if contact.github %}
+          <a href="{{ contact.github }}" target="_blank" class="hover:text-slate-900 transition">GitHub</a>
+          {% endif %}
+          {% if contact.linkedin %}
+          <a href="{{ contact.linkedin }}" target="_blank" class="hover:text-slate-900 transition">LinkedIn</a>
+          {% endif %}
+        </div>
+        <div class="text-[11px] text-slate-400 font-mono">
+          Status: Ready for technical recruitment
+        </div>
+      </div>
+    </aside>
+
+    <!-- Scrollable Right Pane -->
+    <main class="scrollable-content lg:w-7/12 py-12 lg:py-16 space-y-24">
+
+      <!-- Section: About -->
+      <section id="about" class="space-y-4">
+        <span class="text-xs font-mono uppercase tracking-widest text-slate-400">01 // Background</span>
+        <h3 class="text-2xl font-bold text-slate-950 tracking-tight">About & Engineering Philosophy</h3>
+        <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+          {{ about }}
+        </p>
+      </section>
+
+      <!-- Section: Featured Projects Case Studies -->
+      <section id="projects" class="space-y-8">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-slate-400">02 // Selected Works</span>
+          <h3 class="text-2xl font-bold text-slate-950 tracking-tight mt-1">Featured Case Studies</h3>
+        </div>
+
+        <div class="space-y-10">
+          {% for proj in featured_projects %}
+          <div class="group p-6 sm:p-7 rounded-2xl bg-slate-50/70 border border-slate-200/90 hover:border-slate-300 hover:bg-slate-50 transition space-y-4 shadow-2xs">
+            <div class="flex items-baseline justify-between gap-2">
+              <h4 class="text-xl font-bold text-slate-950 group-hover:text-brand transition">{{ proj.name }}</h4>
+              {% if proj.role %}
+              <span class="text-xs font-mono text-slate-500">{{ proj.role }}</span>
+              {% endif %}
+            </div>
+
+            <p class="text-xs text-slate-600 leading-relaxed">
+              {{ proj.overview }}
+            </p>
+
+            {% if proj.solution %}
+            <div class="p-3 rounded-lg bg-white border border-slate-200 text-xs text-slate-700">
+              <strong class="font-semibold text-slate-900">Solution:</strong> {{ proj.solution }}
+            </div>
+            {% endif %}
+
+            {% if proj.key_features %}
+            <ul class="space-y-1 text-xs text-slate-600 pt-1">
+              {% for feat in proj.key_features %}
+              <li class="flex items-start gap-2">
+                <span class="text-brand font-bold">&rarr;</span>
+                <span>{{ feat }}</span>
+              </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-200/80">
+              <div class="flex flex-wrap gap-1.5">
+                {% for t in proj.technologies %}
+                <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-white text-slate-700 border border-slate-200">
+                  {{ t }}
+                </span>
+                {% endfor %}
+              </div>
+              <div class="flex items-center gap-2">
+                {% if proj.links and proj.links.demo %}
+                <a href="{{ proj.links.demo }}" target="_blank" class="px-3 py-1 rounded bg-slate-900 text-white text-xs font-medium hover:bg-slate-800 transition">
+                  Live &rarr;
+                </a>
+                {% endif %}
+                {% if proj.links and proj.links.github %}
+                <a href="{{ proj.links.github }}" target="_blank" class="px-3 py-1 rounded bg-white border border-slate-300 text-slate-700 text-xs font-medium hover:bg-slate-100 transition">
+                  Code
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Section: Work Experience -->
+      {% if experience %}
+      <section id="experience" class="space-y-6">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-slate-400">03 // Track Record</span>
+          <h3 class="text-2xl font-bold text-slate-950 tracking-tight mt-1">Experience</h3>
+        </div>
+
+        <div class="space-y-6">
+          {% for exp in experience %}
+          <div class="border-l-2 border-slate-200 pl-4 py-1 space-y-2">
+            <div class="flex items-baseline justify-between text-sm">
+              <span class="font-bold text-slate-900">{{ exp.role }} &bull; {{ exp.company }}</span>
+              <span class="text-xs font-mono text-slate-500">{{ exp.duration }}</span>
+            </div>
+            {% if exp.highlights %}
+            <ul class="space-y-1 text-xs text-slate-600 leading-relaxed">
+              {% for hl in exp.highlights %}
+              <li>&bull; {{ hl }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+      {% endif %}
+
+      <!-- Section: Skills -->
+      <section id="skills" class="space-y-6">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-slate-400">04 // Capabilities</span>
+          <h3 class="text-2xl font-bold text-slate-950 tracking-tight mt-1">Skills & Tools</h3>
+        </div>
+
+        <div class="space-y-4">
+          {% for cat, slist in skills.items() %}
+          <div>
+            <div class="text-xs font-mono font-semibold text-slate-600 mb-1.5 uppercase">{{ cat }}</div>
+            <div class="flex flex-wrap gap-1.5">
+              {% for s in slist %}
+              <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">
+                {{ s }}
+              </span>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <!-- Section: Education & Contact -->
+      <section id="contact" class="space-y-6 pt-6 border-t border-slate-200">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-slate-400">05 // Connect</span>
+          <h3 class="text-2xl font-bold text-slate-950 tracking-tight mt-1">Get in Touch</h3>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Looking for a focused, mission-driven software engineer? Let's connect.
+        </p>
+        {% if contact.email %}
+        <a href="mailto:{{ contact.email }}" class="inline-flex px-5 py-2.5 rounded-lg bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition">
+          Email {{ contact.email }}
+        </a>
+        {% endif %}
+      </section>
+
+    </main>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-zinc-900 font-sans antialiased min-h-screen selection:bg-zinc-900 selection:text-white;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight text-zinc-900 font-semibold;
+  }
+}
+
+/* Taste-Skill: Clean Light-Mode Minimalist Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4f4f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1aa;
+}
+
+/* Taste-Skill: Editorial White Card Design (Anti-AI-Slop, No Neon Glow) */
+.glass-panel {
+  background: #ffffff;
+  border: 1px solid #e4e4e7;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+.glass-card {
+  background: #ffffff;
+  border: 1px solid #e4e4e7;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.glass-card:hover {
+  border-color: #a1a1aa;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+}
+
+/* Subtle Micro-Animations */
+@keyframes subtle-fade {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-subtle-fade {
+  animation: subtle-fade 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
