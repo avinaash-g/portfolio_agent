@@ -379,10 +379,10 @@ def test_deploy_api_endpoint_and_live_url(sample_portfolio_content):
 
 def test_deploy_auto_zero_config_fallback(sample_portfolio_content):
     """
-    Test zero-config deployment when provider is 'auto' (no Netlify token configured):
-    1. Returns HTTP 200 with status='success' and provider='Local Preview'
-    2. URL points to http://localhost:8000/deployed/{portfolio_id}/index.html
-    3. Dedicated static preview route immediately serves 200 OK HTML without 404
+    Test zero-config real public cloud deployment when provider is 'auto':
+    1. Returns HTTP 200 with status='success' and public cloud provider
+    2. URL points to real public HTTPS domain (never localhost:8000)
+    3. Dedicated static preview route immediately serves 200 OK HTML for local iframe
     """
     unique_id = str(uuid.uuid4())[:8]
     test_email = f"fallback_{unique_id}@example.com"
@@ -449,8 +449,10 @@ def test_deploy_auto_zero_config_fallback(sample_portfolio_content):
     deploy_data = deploy_res.json()
 
     assert deploy_data["status"] == "success"
-    assert deploy_data["provider"] == "Local Preview"
-    assert deploy_data["url"] == f"http://localhost:8000/deployed/{p_id}/index.html"
+    assert deploy_data["provider"] in ["Netlify", "DeedPage Cloud", "Vercel", "GitHub HTML Preview"]
+    assert deploy_data["url"].startswith("https://")
+    assert "localhost" not in deploy_data["url"]
+    assert "127.0.0.1" not in deploy_data["url"]
     assert deploy_data["preview_url"] == f"/deployed/{p_id}/index.html"
 
     # Verify dedicated preview routes: GET /deployed/{portfolio_id}/index.html, GET /deployed/{portfolio_id}/
