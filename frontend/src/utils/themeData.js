@@ -1,5 +1,19 @@
 export const CURATED_THEMES = [
   {
+    id: "luxury_saas",
+    name: "Luxury Void & Cobalt",
+    tagline: "4-Color High-Tech Luxury",
+    primary: "#2563EB",
+    accent: "#7C3AED",
+    mode: "dark",
+    bg_color: "#0B0F19",
+    surface_color: "#111827",
+    border_color: "rgba(255, 255, 255, 0.1)",
+    border: "border-white/10",
+    bgBadge: "bg-violet-950/80 text-violet-300 border-violet-800",
+    description: "Deep Void Slate canvas, Electric Cobalt brand accents, Luminous Amethyst glows, and Alabaster Zinc micro-typography."
+  },
+  {
     id: "emerald",
     name: "Editorial Ink",
     tagline: "Monochrome & Sharp",
@@ -67,6 +81,8 @@ export const CURATED_THEMES = [
 ];
 
 export const PRESET_ACCENT_COLORS = [
+  "#2563EB", // Electric Cobalt
+  "#7C3AED", // Luminous Amethyst
   "#18181b", // Ink Black
   "#334155", // Slate
   "#166534", // Forest Green

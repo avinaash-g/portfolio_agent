@@ -13,6 +13,8 @@ import ProjectReorderModal from "./components/ProjectReorderModal";
 import VersionHistoryModal from "./components/VersionHistoryModal";
 import PortfolioPreview from "./components/PortfolioPreview";
 import DeploymentBanner from "./components/DeploymentBanner";
+import LandingPage from "./components/LandingPage";
+import DeveloperApiModal from "./components/DeveloperApiModal";
 import { api } from "./api";
 import { SAMPLE_PROFILES } from "./utils/sampleData";
 import { THEME_PRESETS } from "./utils/themeData";
@@ -21,9 +23,10 @@ import { ListOrdered, History, Sparkles } from "lucide-react";
 function MainApp() {
   const { user, isAuthenticated } = useAuth();
 
-  // Navigation State: 'form' | 'progress' | 'questions' | 'plan' | 'preview'
-  const [currentView, setCurrentView] = useState("form");
+  // Navigation State: 'landing' | 'form' | 'progress' | 'questions' | 'plan' | 'preview'
+  const [currentView, setCurrentView] = useState("landing");
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isDeveloperApiOpen, setIsDeveloperApiOpen] = useState(false);
 
   // Form State
   const defaultSample = SAMPLE_PROFILES.software_developer;
@@ -73,6 +76,8 @@ function MainApp() {
   const [template, setTemplate] = useState("clean");
   const [versions, setVersions] = useState([]);
   const [currentVersionId, setCurrentVersionId] = useState(null);
+  const [deploymentUrl, setDeploymentUrl] = useState(null);
+  const [deploymentProvider, setDeploymentProvider] = useState("Public Cloud");
 
   // UI Modals & Actions
   const [isGenerating, setIsGenerating] = useState(false);
@@ -176,6 +181,9 @@ function MainApp() {
           setQualityReport(data.current_version.quality_report);
         }
         setCurrentVersionId(data.current_version.id);
+      }
+      if (data.deployment_url) {
+        setDeploymentUrl(data.deployment_url);
       }
       const vList = await api.getVersions(id);
       setVersions(vList);
@@ -398,7 +406,7 @@ function MainApp() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-zinc-900">
+    <div className="min-h-screen flex flex-col bg-[#F3EFEA] text-[#1B1F3B]">
       
       {/* Top Navbar */}
       <Navbar
@@ -406,11 +414,20 @@ function MainApp() {
         setCurrentView={setCurrentView}
         portfolioId={portfolioId}
         onOpenAuth={() => setIsAuthOpen(true)}
+        onOpenDeveloperApi={() => setIsDeveloperApiOpen(true)}
         agentStatus={agentStatus}
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col bg-zinc-50/50">
+      <main className="flex-1 flex flex-col bg-[#F3EFEA]">
+        {currentView === "landing" && (
+          <LandingPage
+            onLaunchStudio={() => setCurrentView("form")}
+            onOpenApiKeyModal={() => setIsDeveloperApiOpen(true)}
+            onOpenAuth={() => setIsAuthOpen(true)}
+          />
+        )}
+
         {currentView === "form" && (
           <OnboardingWizard
             formData={formData}
@@ -466,6 +483,8 @@ function MainApp() {
             <DeploymentBanner
               portfolioId={portfolioId}
               qualityScore={qualityReport?.score || 95}
+              initialDeploymentUrl={deploymentUrl}
+              initialProvider={deploymentProvider}
               onDownloadZip={() => {
                 const exportUrl = api.getExportUrl(portfolioId, template, selectedTheme, accentColor, selectedLayout);
                 const link = document.createElement("a");
@@ -476,6 +495,8 @@ function MainApp() {
                 document.body.removeChild(link);
               }}
               onDeployed={(deployResult) => {
+                if (deployResult?.url) setDeploymentUrl(deployResult.url);
+                if (deployResult?.provider) setDeploymentProvider(deployResult.provider);
                 refreshPortfolio(portfolioId);
               }}
             />
@@ -486,21 +507,21 @@ function MainApp() {
               <div className="lg:col-span-5 space-y-5 overflow-y-auto max-h-[calc(100vh-14rem)] pr-1">
                 
                 {/* Top Quick Actions Bar */}
-                <div className="flex items-center justify-between bg-white border border-zinc-200 rounded-xl p-3 shadow-2xs">
-                  <span className="text-xs font-semibold text-zinc-800">Workspace Controls</span>
+                <div className="flex items-center justify-between bg-white border border-[#E5DFD7] rounded-xl p-3 shadow-soft">
+                  <span className="text-xs font-bold text-[#1B1F3B]">Workspace Controls</span>
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => setIsReorderOpen(true)}
-                      className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-xs font-medium text-zinc-700 transition"
+                      className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#FAF7F4] hover:bg-[#EAE4DC] border border-[#DCD5CB] text-xs font-semibold text-[#1B1F3B] transition shadow-xs"
                     >
-                      <ListOrdered className="w-3.5 h-3.5 text-zinc-600" />
+                      <ListOrdered className="w-3.5 h-3.5 text-[#6B3074]" />
                       <span>Reorder</span>
                     </button>
                     <button
                       onClick={() => setIsHistoryOpen(true)}
-                      className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 text-xs font-medium text-zinc-700 transition"
+                      className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#FAF7F4] hover:bg-[#EAE4DC] border border-[#DCD5CB] text-xs font-semibold text-[#1B1F3B] transition shadow-xs"
                     >
-                      <History className="w-3.5 h-3.5 text-zinc-600" />
+                      <History className="w-3.5 h-3.5 text-[#6B3074]" />
                       <span>Versions ({versions.length})</span>
                     </button>
                   </div>
@@ -554,6 +575,12 @@ function MainApp() {
       <AuthModal
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
+      />
+
+      <DeveloperApiModal
+        isOpen={isDeveloperApiOpen}
+        onClose={() => setIsDeveloperApiOpen(false)}
+        onOpenAuth={() => setIsAuthOpen(true)}
       />
 
       <ProjectReorderModal

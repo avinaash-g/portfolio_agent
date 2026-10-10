@@ -85,7 +85,7 @@ class LLMClient:
         If Gemini is configured, it calls Gemini with structured JSON output and retries on validation errors.
         If no API key or call fails, it uses the high-fidelity deterministic engine.
         """
-        if self._genai_client:
+        if self._genai_client and not getattr(self, "_quota_exhausted", False):
             attempt = 0
             current_prompt = prompt
             last_error = ""
@@ -126,7 +126,10 @@ class LLMClient:
                             f"Please fix the error and output strictly valid JSON matching the schema."
                         )
                 except Exception as api_err:
-                    logger.error(f"Gemini API error during {stage_name}: {api_err}. Falling back to deterministic engine.")
+                    err_msg = str(api_err)
+                    logger.error(f"Gemini API error during {stage_name}: {err_msg}. Falling back to deterministic engine.")
+                    if "RESOURCE_EXHAUSTED" in err_msg or "429" in err_msg:
+                        self._quota_exhausted = True
                     break
 
         # Fallback deterministic execution

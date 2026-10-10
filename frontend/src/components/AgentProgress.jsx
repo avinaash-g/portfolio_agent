@@ -1,7 +1,7 @@
 import React from "react";
 import { 
   CheckCircle2, Circle, Loader2, AlertCircle, 
-  Terminal, ArrowRight, ShieldCheck, Cpu 
+  Terminal, ArrowRight, Cpu, Sparkles 
 } from "lucide-react";
 
 const STAGES = [
@@ -59,29 +59,32 @@ export default function AgentProgress({
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-6 animate-subtle-fade text-[#1B1F3B]">
       
       {/* Header Banner */}
-      <div className="bg-white border border-zinc-200 rounded-2xl p-6 sm:p-8 text-center space-y-3 shadow-2xs">
-        <div className="w-10 h-10 rounded-xl bg-zinc-100 border border-zinc-200 text-zinc-900 flex items-center justify-center mx-auto mb-1">
-          <Cpu className="w-5 h-5 text-zinc-800" />
+      <div className="bg-white border border-[#E5DFD7] rounded-2xl p-6 sm:p-8 text-center space-y-3 shadow-soft">
+        <div className="w-12 h-12 rounded-xl bg-[#6B3074] text-white flex items-center justify-center mx-auto mb-1 shadow-soft">
+          <Cpu className="w-6 h-6 text-white" />
         </div>
-        <h2 className="text-xl sm:text-2xl font-semibold text-zinc-900 tracking-tight">
+        <h2 className="text-xl sm:text-2xl font-bold text-[#1B1F3B] tracking-tight">
           Autonomous Portfolio Synthesis
         </h2>
-        <p className="text-xs sm:text-sm text-zinc-500 max-w-lg mx-auto leading-relaxed">
+        <p className="text-xs sm:text-sm text-[#1B1F3B]/75 max-w-lg mx-auto leading-relaxed">
           The agent is inspecting your experience, structuring technical case studies, and auditing quality against recruiter rubrics.
         </p>
 
         {/* Progress Bar */}
         <div className="w-full max-w-md mx-auto mt-6">
-          <div className="flex justify-between text-xs font-mono font-medium text-zinc-500 mb-2">
-            <span>{currentStage || "Processing..."}</span>
-            <span className="text-zinc-900 font-semibold">{progress}%</span>
+          <div className="flex justify-between text-xs font-mono font-medium text-[#1B1F3B]/75 mb-2">
+            <span className="text-[#6B3074] font-semibold flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-[#6B3074] animate-pulse" />
+              {currentStage || "Processing..."}
+            </span>
+            <span className="text-[#1B1F3B] font-bold">{progress}%</span>
           </div>
-          <div className="w-full h-2 bg-zinc-100 rounded-full overflow-hidden border border-zinc-200">
+          <div className="w-full h-2.5 bg-[#FAF7F4] rounded-full overflow-hidden border border-[#E5DFD7]">
             <div
-              className="h-full bg-zinc-900 transition-all duration-500 rounded-full"
+              className="h-full bg-[#6B3074] transition-all duration-500 rounded-full shadow-xs"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
@@ -89,14 +92,14 @@ export default function AgentProgress({
 
         {/* Action Trigger Banner if state requires user input */}
         {state === "NEEDS_INFO" && (
-          <div className="mt-6 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs shadow-2xs">
+          <div className="mt-6 p-4 rounded-xl bg-[#FAF7F4] border border-amber-300 text-[#1B1F3B] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs shadow-soft animate-subtle-fade">
             <div className="flex items-center space-x-2">
-              <AlertCircle className="w-4 h-4 text-amber-700 shrink-0" />
-              <span>The agent detected {questionsCount} clarifying questions to improve case studies.</span>
+              <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+              <span className="font-medium">The agent detected {questionsCount} clarifying questions to improve case studies.</span>
             </div>
             <button
               onClick={onGoToQuestions}
-              className="px-3.5 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-medium transition flex items-center space-x-1 shrink-0"
+              className="px-4 py-2 rounded-lg bg-[#FF6B6B] hover:bg-[#FA5252] text-white font-semibold transition flex items-center space-x-1 shrink-0 shadow-coral"
             >
               <span>Answer Questions</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -105,21 +108,21 @@ export default function AgentProgress({
         )}
 
         {isDone && (
-          <div className="mt-6 p-4 rounded-xl bg-zinc-50 border border-zinc-200 text-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs shadow-2xs">
+          <div className="mt-6 p-4 rounded-xl bg-[#FAF7F4] border border-emerald-300 text-[#1B1F3B] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs shadow-soft animate-subtle-fade">
             <div className="flex items-center space-x-2.5">
-              <CheckCircle2 className="w-5 h-5 text-zinc-900 shrink-0" />
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
               <div className="text-left">
-                <span className="font-semibold text-zinc-900 block">Portfolio Ready for Review</span>
+                <span className="font-bold text-[#1B1F3B] block">Portfolio Ready for Review</span>
                 {qualityScore !== null && (
-                  <span className="text-[11px] text-zinc-600 font-mono">
-                    Quality Audit Score: <strong>{qualityScore}/100</strong> &bull; Recruiter-Ready
+                  <span className="text-[11px] text-[#1B1F3B]/70 font-mono">
+                    Quality Audit Score: <strong className="text-emerald-700 font-bold">{qualityScore}/100</strong> &bull; Recruiter-Ready
                   </span>
                 )}
               </div>
             </div>
             <button
               onClick={onGoToStudio}
-              className="px-4 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-medium transition flex items-center space-x-1.5 shadow-2xs shrink-0"
+              className="px-5 py-2.5 rounded-lg bg-[#FF6B6B] hover:bg-[#FA5252] text-white font-semibold transition flex items-center space-x-1.5 shadow-coral shrink-0"
             >
               <span>Open Portfolio Studio</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -137,50 +140,59 @@ export default function AgentProgress({
               key={s.id}
               className={`p-3.5 rounded-xl border transition text-left space-y-1.5 ${
                 status === "completed"
-                  ? "bg-zinc-50/70 border-zinc-200 text-zinc-800"
+                  ? "bg-[#FAF7F4] border-[#E5DFD7] text-[#1B1F3B]"
                   : status === "active"
-                  ? "bg-white border-zinc-900 ring-1 ring-zinc-900 shadow-2xs text-zinc-900"
-                  : "bg-white border-zinc-200/70 text-zinc-400"
+                  ? "bg-white border-[#6B3074] ring-2 ring-[#6B3074] shadow-soft text-[#1B1F3B]"
+                  : "bg-white/60 border-[#E5DFD7] text-[#1B1F3B]/40"
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#1B1F3B]/60 font-semibold">
                   Stage {idx + 1}
                 </span>
-                {status === "completed" && <CheckCircle2 className="w-3.5 h-3.5 text-zinc-900" />}
-                {status === "active" && <Loader2 className="w-3.5 h-3.5 text-zinc-900 animate-spin" />}
-                {status === "pending" && <Circle className="w-3.5 h-3.5 text-zinc-300" />}
+                {status === "completed" && <CheckCircle2 className="w-4 h-4 text-[#6B3074]" />}
+                {status === "active" && (
+                  <div className="flex items-center space-x-1">
+                    <span className="px-1.5 py-0.5 rounded-full bg-[#FF6B6B] text-white text-[9px] font-bold uppercase tracking-wider animate-pulse">
+                      Live
+                    </span>
+                    <Loader2 className="w-3.5 h-3.5 text-[#6B3074] animate-spin" />
+                  </div>
+                )}
+                {status === "pending" && <Circle className="w-3.5 h-3.5 text-[#1B1F3B]/25" />}
               </div>
-              <h4 className="text-xs font-semibold text-zinc-900">
+              <h4 className="text-xs font-bold text-[#1B1F3B]">
                 {s.label}
               </h4>
-              <p className="text-[11px] text-zinc-500 leading-snug">{s.desc}</p>
+              <p className="text-[11px] text-[#1B1F3B]/70 leading-snug">{s.desc}</p>
             </div>
           );
         })}
       </div>
 
       {/* Real-time Agent Log Console */}
-      <div className="bg-zinc-50 border border-zinc-200 rounded-xl p-4 font-mono text-xs shadow-2xs">
-        <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-zinc-200 text-zinc-500">
+      <div className="bg-[#FAF7F4] border border-[#E5DFD7] rounded-xl p-4 font-mono text-xs shadow-soft">
+        <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-[#E5DFD7] text-[#1B1F3B]">
           <div className="flex items-center space-x-2">
-            <Terminal className="w-3.5 h-3.5 text-zinc-700" />
-            <span className="font-semibold text-zinc-800">Agent Event Stream</span>
+            <Terminal className="w-3.5 h-3.5 text-[#6B3074]" />
+            <span className="font-bold text-[#1B1F3B]">Agent Event Stream</span>
           </div>
-          <span className="text-[10px] text-zinc-400">Live SSE Stream</span>
+          <span className="text-[10px] text-emerald-700 font-mono font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+            Live SSE Stream
+          </span>
         </div>
 
-        <div className="space-y-1.5 max-h-56 overflow-y-auto pr-2 text-zinc-700">
+        <div className="space-y-1.5 max-h-56 overflow-y-auto pr-2 text-[#1B1F3B]">
           {logs.length === 0 ? (
-            <p className="text-zinc-400 italic">Initializing agent pipeline...</p>
+            <p className="text-[#1B1F3B]/50 italic">Initializing agent pipeline...</p>
           ) : (
             logs.map((log, idx) => (
               <div key={idx} className="flex items-start space-x-2 text-[11px] leading-relaxed">
-                <span className="text-zinc-400 text-[10px] shrink-0 font-mono">
+                <span className="text-[#1B1F3B]/40 text-[10px] shrink-0 font-mono">
                   {log.timestamp ? new Date(log.timestamp).toLocaleTimeString() : ">"}
                 </span>
-                <span className="text-zinc-900 font-semibold shrink-0">[{log.stage}]</span>
-                <span className="text-zinc-600 break-words">{log.message}</span>
+                <span className="text-[#6B3074] font-bold shrink-0">[{log.stage}]</span>
+                <span className="text-[#1B1F3B]/85 break-words">{log.message}</span>
               </div>
             ))
           )}

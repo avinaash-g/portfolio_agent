@@ -24,16 +24,16 @@ export default function NLEditBox({ onApplyEdit, isEditing, lastEditSummary }) {
   };
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-xl p-5 space-y-3.5 shadow-2xs">
+    <div className="bg-white border border-[#E5DFD7] rounded-xl p-5 space-y-3.5 shadow-soft text-[#1B1F3B]">
       <div className="flex items-center space-x-2.5">
-        <div className="w-7 h-7 rounded-lg bg-zinc-100 border border-zinc-200 text-zinc-900 flex items-center justify-center">
-          <Wand2 className="w-3.5 h-3.5 text-zinc-800" />
+        <div className="w-8 h-8 rounded-lg bg-[#6B3074]/15 border border-[#6B3074]/25 text-[#6B3074] flex items-center justify-center font-bold">
+          <Wand2 className="w-4 h-4 text-[#6B3074]" />
         </div>
         <div>
-          <h4 className="text-xs font-semibold text-zinc-900">
+          <h4 className="text-xs font-bold text-[#1B1F3B]">
             Natural-Language Refinement
           </h4>
-          <p className="text-[11px] text-zinc-500">
+          <p className="text-[11px] text-[#1B1F3B]/70">
             Instruct the agent in plain English to adjust tone, emphasis, or phrasing.
           </p>
         </div>
@@ -47,9 +47,9 @@ export default function NLEditBox({ onApplyEdit, isEditing, lastEditSummary }) {
             type="button"
             disabled={isEditing}
             onClick={() => handleChipClick(prompt)}
-            className="px-2.5 py-1 rounded-md bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 text-[11px] text-zinc-700 transition flex items-center space-x-1.5 disabled:opacity-50"
+            className="px-2.5 py-1 rounded-md bg-[#FAF7F4] hover:bg-[#EAE4DC] border border-[#DCD5CB] text-[11px] font-medium text-[#1B1F3B] transition flex items-center space-x-1.5 disabled:opacity-50"
           >
-            <Sparkles className="w-3 h-3 text-zinc-400 shrink-0" />
+            <Sparkles className="w-3 h-3 text-[#6B3074] shrink-0" />
             <span>{prompt}</span>
           </button>
         ))}
@@ -63,12 +63,12 @@ export default function NLEditBox({ onApplyEdit, isEditing, lastEditSummary }) {
           onChange={(e) => setInstruction(e.target.value)}
           placeholder="e.g. Focus more on backend scalability & throughput metrics..."
           disabled={isEditing}
-          className="w-full pl-3.5 pr-11 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-xs text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition disabled:opacity-50"
+          className="w-full pl-3.5 pr-11 py-2 bg-white border border-[#DCD5CB] rounded-lg text-xs text-[#1B1F3B] placeholder-[#1B1F3B]/40 focus:outline-none focus:border-[#6B3074] focus:ring-1 focus:ring-[#6B3074] transition disabled:opacity-50"
         />
         <button
           type="submit"
           disabled={isEditing || !instruction.trim()}
-          className="absolute right-1.5 top-1.5 p-1.5 rounded-md bg-zinc-900 hover:bg-zinc-800 text-white transition disabled:opacity-40"
+          className="absolute right-1.5 top-1.5 p-1.5 rounded-md bg-[#FF6B6B] hover:bg-[#FA5252] text-white transition disabled:opacity-40 shadow-xs"
         >
           {isEditing ? (
             <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -80,11 +80,11 @@ export default function NLEditBox({ onApplyEdit, isEditing, lastEditSummary }) {
 
       {/* Last Change Feedback */}
       {lastEditSummary && (
-        <div className="p-2.5 rounded-lg bg-zinc-50 border border-zinc-200 text-zinc-800 text-xs flex items-start space-x-2">
-          <Check className="w-3.5 h-3.5 text-zinc-900 shrink-0 mt-0.5" />
+        <div className="p-2.5 rounded-lg bg-[#FAF7F4] border border-[#E5DFD7] text-[#1B1F3B] text-xs flex items-start space-x-2">
+          <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
           <div className="text-[11px]">
-            <span className="font-semibold text-zinc-900">Applied: </span>
-            <span className="text-zinc-700">{lastEditSummary}</span>
+            <span className="font-bold text-[#1B1F3B]">Applied: </span>
+            <span className="text-[#1B1F3B]/80">{lastEditSummary}</span>
           </div>
         </div>
       )}

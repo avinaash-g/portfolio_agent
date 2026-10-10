@@ -30,6 +30,7 @@ class User(Base):
 
     profiles = relationship("Profile", back_populates="user", cascade="all, delete-orphan")
     portfolios = relationship("Portfolio", back_populates="user", cascade="all, delete-orphan")
+    api_keys = relationship("ApiKey", back_populates="user", cascade="all, delete-orphan")
 
 
 class Profile(Base):
@@ -149,3 +150,20 @@ class AgentQuestion(Base):
     status = Column(String(50), default="open")  # open, answered, skipped
 
     run = relationship("AgentRun", back_populates="questions")
+
+
+class ApiKey(Base):
+    __tablename__ = "api_keys"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey("users.id"), nullable=False)
+    key_hash = Column(String(64), unique=True, index=True, nullable=False)
+    key_prefix = Column(String(32), nullable=False)
+    name = Column(String(255), nullable=False)
+    daily_limit = Column(Integer, default=10)
+    requests_today = Column(Integer, default=0)
+    last_reset_date = Column(String(10), default=lambda: datetime.now(timezone.utc).strftime("%Y-%m-%d"))
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=utc_now)
+
+    user = relationship("User", back_populates="api_keys")

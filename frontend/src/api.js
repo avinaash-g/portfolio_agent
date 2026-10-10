@@ -132,5 +132,16 @@ export const api = {
     return () => {
       eventSource.close();
     };
-  }
+  },
+
+  // --- Developer API Keys & v1 Gateway ---
+  getApiKeys: () => request("/developer/keys"),
+  createApiKey: (name) => request("/developer/keys", { method: "POST", body: JSON.stringify({ name }) }),
+  revokeApiKey: (id) => request(`/developer/keys/${id}`, { method: "DELETE" }),
+  generateViaApiKey: (apiKey, payload) =>
+    request("/v1/generate", {
+      method: "POST",
+      headers: { "X-API-Key": apiKey },
+      body: JSON.stringify(payload)
+    })
 };

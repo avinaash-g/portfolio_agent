@@ -405,3 +405,70 @@ class PortfolioOut(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+
+# --- Developer Platform & API Key Schemas ---
+class ApiKeyCreateRequest(BaseModel):
+    name: str = Field(..., min_length=1, max_length=100, description="Label for the API Key")
+
+class ApiKeyCreatedResponse(BaseModel):
+    id: str
+    name: str
+    api_key: str  # Only returned once on creation!
+    key_prefix: str
+    masked_key: str
+    daily_limit: int
+    requests_today: int
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+class ApiKeyOut(BaseModel):
+    id: str
+    name: str
+    key_prefix: str
+    masked_key: str
+    daily_limit: int
+    requests_today: int
+    remaining_today: int
+    created_at: datetime
+    is_active: bool
+
+    model_config = ConfigDict(from_attributes=True)
+
+class DeveloperGenerateProjectItem(BaseModel):
+    name: str
+    description: str
+    technologies: list[str] = Field(default_factory=list)
+    role: Optional[str] = None
+    github_url: Optional[str] = None
+    demo_url: Optional[str] = None
+    outcomes: Optional[str] = None
+    is_featured: bool = True
+
+class DeveloperGenerateRequest(BaseModel):
+    name: str = Field(..., min_length=1, description="Candidate name")
+    target_role: str = Field(..., min_length=1, description="Target career role")
+    headline: Optional[str] = None
+    about: Optional[str] = None
+    skills: list[str] = Field(default_factory=list)
+    experience: list[dict[str, Any]] = Field(default_factory=list)
+    education: list[dict[str, Any]] = Field(default_factory=list)
+    achievements: list[dict[str, Any]] = Field(default_factory=list)
+    links: dict[str, Optional[str]] = Field(default_factory=dict)
+    projects: list[Union[DeveloperGenerateProjectItem, dict[str, Any]]] = Field(default_factory=list)
+    layout_id: Optional[str] = "modern_grid"
+    custom_layout_prompt: Optional[str] = None
+    theme_id: Optional[str] = "electric_cobalt"
+    primary_color: Optional[str] = "#2563EB"
+
+class DeveloperGenerateUsage(BaseModel):
+    requests_today: int
+    daily_limit: int
+    remaining_today: int
+
+class DeveloperGenerateResponse(BaseModel):
+    status: str = "success"
+    portfolio: PortfolioContent
+    quality_report: QualityReport
+    usage: DeveloperGenerateUsage
+

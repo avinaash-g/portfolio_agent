@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from app.config import settings
 from app.database import engine, Base, init_db
 from app.agent.orchestrator import orchestrator
-from app.routers import auth, profile, projects, portfolios, runs
+from app.routers import auth, profile, projects, portfolios, runs, api_keys
 
 # Configure logging
 logging.basicConfig(
@@ -49,6 +49,9 @@ app.include_router(profile.router, prefix="/api")
 app.include_router(projects.router, prefix="/api")
 app.include_router(portfolios.router, prefix="/api")
 app.include_router(runs.router, prefix="/api")
+app.include_router(api_keys.developer_router, prefix="/api")
+app.include_router(api_keys.public_v1_router, prefix="/api")
+app.include_router(api_keys.public_v1_router)  # allows /v1/generate as well as /api/v1/generate
 
 # Mount static deployments for live local preview
 from fastapi import HTTPException

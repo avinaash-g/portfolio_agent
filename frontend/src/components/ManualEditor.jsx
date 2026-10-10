@@ -21,11 +21,11 @@ export default function ManualEditor({ content, onSaveManual, isSaving }) {
   };
 
   return (
-    <div className="bg-white border border-zinc-200 rounded-xl p-5 space-y-4 shadow-2xs">
+    <div className="bg-white border border-[#E5DFD7] rounded-xl p-5 space-y-4 shadow-soft text-[#1B1F3B]">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <Edit3 className="w-4 h-4 text-zinc-800" />
-          <h4 className="text-xs font-semibold text-zinc-900 uppercase tracking-wider">
+          <Edit3 className="w-4 h-4 text-[#6B3074]" />
+          <h4 className="text-xs font-bold text-[#1B1F3B] uppercase tracking-wider">
             Direct Content Editor
           </h4>
         </div>
@@ -34,7 +34,7 @@ export default function ManualEditor({ content, onSaveManual, isSaving }) {
           type="button"
           disabled={isSaving}
           onClick={handleSave}
-          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs transition shadow-2xs disabled:opacity-50"
+          className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-[#FF6B6B] hover:bg-[#FA5252] text-white font-semibold text-xs transition shadow-coral disabled:opacity-50"
         >
           {savedStatus ? <Check className="w-3.5 h-3.5" /> : <Save className="w-3.5 h-3.5" />}
           <span>{savedStatus ? "Saved!" : isSaving ? "Saving..." : "Save Edits"}</span>
@@ -42,16 +42,16 @@ export default function ManualEditor({ content, onSaveManual, isSaving }) {
       </div>
 
       {/* Section Subtabs */}
-      <div className="flex gap-1 bg-zinc-100 p-1 rounded-lg border border-zinc-200/80 overflow-x-auto text-[11px] font-medium">
+      <div className="flex gap-1 bg-[#FAF7F4] p-1 rounded-lg border border-[#E5DFD7] overflow-x-auto text-[11px] font-medium">
         {["hero", "about", "skills", "projects"].map((tab) => (
           <button
             key={tab}
             type="button"
             onClick={() => setActiveSection(tab)}
-            className={`px-2.5 py-1 rounded-md capitalize transition ${
+            className={`px-3 py-1 rounded-md capitalize transition ${
               activeSection === tab
-                ? "bg-white text-zinc-900 shadow-2xs font-semibold"
-                : "text-zinc-600 hover:text-zinc-900"
+                ? "bg-[#6B3074] text-white shadow-xs font-bold"
+                : "text-[#1B1F3B]/70 hover:text-[#1B1F3B]"
             }`}
           >
             {tab}
@@ -63,21 +63,21 @@ export default function ManualEditor({ content, onSaveManual, isSaving }) {
       {activeSection === "hero" && (
         <div className="space-y-3 text-xs">
           <div>
-            <label className="block text-zinc-700 mb-1 font-medium">Hero Title</label>
+            <label className="block text-[#1B1F3B] mb-1 font-bold">Hero Title</label>
             <input
               type="text"
               value={formData.hero?.title || ""}
               onChange={(e) => setFormData({ ...formData, hero: { ...formData.hero, title: e.target.value } })}
-              className="w-full px-3 py-1.5 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 focus:bg-white focus:outline-none focus:border-zinc-900"
+              className="w-full px-3 py-1.5 bg-white border border-[#DCD5CB] rounded-lg text-[#1B1F3B] placeholder-[#1B1F3B]/40 focus:outline-none focus:border-[#6B3074]"
             />
           </div>
           <div>
-            <label className="block text-zinc-700 mb-1 font-medium">Tagline / Value Statement</label>
+            <label className="block text-[#1B1F3B] mb-1 font-bold">Tagline / Value Statement</label>
             <input
               type="text"
               value={formData.hero?.tagline || ""}
               onChange={(e) => setFormData({ ...formData, hero: { ...formData.hero, tagline: e.target.value } })}
-              className="w-full px-3 py-1.5 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 focus:bg-white focus:outline-none focus:border-zinc-900"
+              className="w-full px-3 py-1.5 bg-white border border-[#DCD5CB] rounded-lg text-[#1B1F3B] placeholder-[#1B1F3B]/40 focus:outline-none focus:border-[#6B3074]"
             />
           </div>
         </div>
@@ -86,64 +86,63 @@ export default function ManualEditor({ content, onSaveManual, isSaving }) {
       {/* About Editor */}
       {activeSection === "about" && (
         <div className="space-y-2 text-xs">
-          <label className="block text-zinc-700 font-medium">About Narrative</label>
+          <label className="block text-[#1B1F3B] font-bold">About Narrative</label>
           <textarea
             rows={5}
             value={formData.about || ""}
             onChange={(e) => setFormData({ ...formData, about: e.target.value })}
-            className="w-full px-3 py-1.5 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 focus:bg-white focus:outline-none focus:border-zinc-900 resize-none leading-relaxed"
+            className="w-full px-3 py-1.5 bg-white border border-[#DCD5CB] rounded-lg text-[#1B1F3B] placeholder-[#1B1F3B]/40 focus:outline-none focus:border-[#6B3074] resize-none leading-relaxed"
           />
         </div>
       )}
 
       {/* Skills Editor */}
       {activeSection === "skills" && (
-        <div className="space-y-3 text-xs">
-          {Object.entries(formData.skills || {}).map(([category, items]) => (
-            <div key={category} className="space-y-1">
-              <label className="block text-zinc-800 font-semibold capitalize">{category}</label>
-              <input
-                type="text"
-                value={Array.isArray(items) ? items.join(", ") : items}
-                onChange={(e) => {
-                  const updatedSkills = { ...formData.skills };
-                  updatedSkills[category] = e.target.value.split(",").map(s => s.trim()).filter(Boolean);
-                  setFormData({ ...formData, skills: updatedSkills });
-                }}
-                className="w-full px-3 py-1.5 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 focus:bg-white focus:outline-none focus:border-zinc-900"
-              />
-            </div>
-          ))}
+        <div className="space-y-2 text-xs">
+          <label className="block text-[#1B1F3B] font-bold">Skills List (comma-separated)</label>
+          <input
+            type="text"
+            value={Array.isArray(formData.skills) ? formData.skills.join(", ") : formData.skills || ""}
+            onChange={(e) => {
+              const splitted = e.target.value.split(",").map((s) => s.trim()).filter(Boolean);
+              setFormData({ ...formData, skills: splitted });
+            }}
+            className="w-full px-3 py-1.5 bg-white border border-[#DCD5CB] rounded-lg text-[#1B1F3B] placeholder-[#1B1F3B]/40 focus:outline-none focus:border-[#6B3074]"
+          />
         </div>
       )}
 
-      {/* Featured Projects Editor */}
+      {/* Projects Editor */}
       {activeSection === "projects" && (
         <div className="space-y-3 text-xs max-h-64 overflow-y-auto pr-1">
-          {formData.featured_projects?.map((proj, idx) => (
-            <div key={idx} className="p-3 rounded-lg bg-zinc-50 border border-zinc-200 space-y-2">
-              <span className="font-semibold text-zinc-900 text-xs block">{proj.name}</span>
+          {((formData.featured_projects || []).concat(formData.other_projects || [])).map((proj, idx) => (
+            <div key={proj.id || idx} className="p-3 bg-[#FAF7F4] border border-[#E5DFD7] rounded-lg space-y-2">
+              <span className="font-bold text-[#1B1F3B] text-[11px]">Project: {proj.name}</span>
               <input
                 type="text"
-                value={proj.overview || ""}
+                value={proj.headline || proj.name || ""}
                 onChange={(e) => {
-                  const updated = [...formData.featured_projects];
-                  updated[idx].overview = e.target.value;
-                  setFormData({ ...formData, featured_projects: updated });
+                  const updated = JSON.parse(JSON.stringify(formData));
+                  const allProjects = [...(updated.featured_projects || []), ...(updated.other_projects || [])];
+                  const target = allProjects.find((p) => p.id === proj.id) || allProjects[idx];
+                  if (target) target.headline = e.target.value;
+                  setFormData(updated);
                 }}
-                placeholder="Overview"
-                className="w-full px-2.5 py-1.5 bg-white border border-zinc-200 rounded-md text-zinc-900 text-xs focus:outline-none focus:border-zinc-900"
+                placeholder="Headline"
+                className="w-full px-2.5 py-1 bg-white border border-[#DCD5CB] rounded text-[11px] text-[#1B1F3B]"
               />
               <textarea
                 rows={2}
-                value={proj.solution || ""}
+                value={proj.outcomes || proj.description || ""}
                 onChange={(e) => {
-                  const updated = [...formData.featured_projects];
-                  updated[idx].solution = e.target.value;
-                  setFormData({ ...formData, featured_projects: updated });
+                  const updated = JSON.parse(JSON.stringify(formData));
+                  const allProjects = [...(updated.featured_projects || []), ...(updated.other_projects || [])];
+                  const target = allProjects.find((p) => p.id === proj.id) || allProjects[idx];
+                  if (target) target.outcomes = e.target.value;
+                  setFormData(updated);
                 }}
-                placeholder="Technical Solution"
-                className="w-full px-2.5 py-1.5 bg-white border border-zinc-200 rounded-md text-zinc-900 text-xs resize-none focus:outline-none focus:border-zinc-900"
+                placeholder="Key outcomes..."
+                className="w-full px-2.5 py-1 bg-white border border-[#DCD5CB] rounded text-[11px] text-[#1B1F3B] resize-none"
               />
             </div>
           ))}

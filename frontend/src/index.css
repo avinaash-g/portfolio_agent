@@ -6,51 +6,113 @@
 
 @layer base {
   body {
-    @apply bg-white text-zinc-900 font-sans antialiased min-h-screen selection:bg-zinc-900 selection:text-white;
+    @apply bg-[#F3EFEA] text-[#1B1F3B] font-sans antialiased min-h-screen selection:bg-[#6B3074] selection:text-white;
+    background-color: #F3EFEA;
+    color: #1B1F3B;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply tracking-tight text-zinc-900 font-semibold;
+    @apply tracking-tight text-[#1B1F3B] font-bold;
+    color: #1B1F3B;
+  }
+
+  p {
+    color: rgba(27, 31, 59, 0.85);
   }
 }
 
-/* Taste-Skill: Clean Light-Mode Minimalist Scrollbars */
+/* Warm Refined Light-Mode Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f4f4f5;
+  background: #F3EFEA;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d8;
+  background: #DCD5CB;
   border-radius: 9999px;
+  border: 1px solid #E5DFD7;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a1a1aa;
+  background: #6B3074;
 }
 
-/* Taste-Skill: Editorial White Card Design (Anti-AI-Slop, No Neon Glow) */
+/* Light Editorial Card & Panel Surfaces */
 .glass-panel {
-  background: #ffffff;
-  border: 1px solid #e4e4e7;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  background: #FAF7F4;
+  border: 1px solid #E5DFD7;
+  box-shadow: 0 4px 16px -4px rgba(27, 31, 59, 0.05);
 }
 
 .glass-card {
-  background: #ffffff;
-  border: 1px solid #e4e4e7;
+  background: #FAF7F4;
+  border: 1px solid #E5DFD7;
   border-radius: 0.75rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 2px 8px -2px rgba(27, 31, 59, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-  border-color: #a1a1aa;
-  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+  border-color: #6B3074;
+  box-shadow: 0 8px 24px -4px rgba(107, 48, 116, 0.12);
+  transform: translateY(-1px);
+}
+
+.hairline-border {
+  border: 1px solid #E5DFD7;
+}
+
+/* Refined Typography Gradients */
+.brand-gradient-text {
+  background: linear-gradient(135deg, #1B1F3B 0%, #6B3074 55%, #FF6B6B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grape-gradient-text {
+  background: linear-gradient(135deg, #6B3074 0%, #5E1B89 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Light Beige Editorial Background Pattern */
+.bg-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(27, 31, 59, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(27, 31, 59, 0.035) 1px, transparent 1px);
+}
+
+/* Form Controls — Clean Editorial Light Style */
+input[type="text"], 
+input[type="email"], 
+input[type="password"], 
+textarea, 
+select {
+  background-color: #FFFFFF !important;
+  color: #1B1F3B !important;
+  border-color: #E5DFD7 !important;
+}
+
+input[type="text"]::placeholder, 
+input[type="email"]::placeholder, 
+input[type="password"]::placeholder, 
+textarea::placeholder {
+  color: rgba(27, 31, 59, 0.42) !important;
+}
+
+input[type="text"]:focus, 
+input[type="email"]:focus, 
+input[type="password"]:focus, 
+textarea:focus, 
+select:focus {
+  border-color: #6B3074 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(107, 48, 116, 0.2) !important;
 }
 
 /* Subtle Micro-Animations */

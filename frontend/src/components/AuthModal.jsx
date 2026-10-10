@@ -59,44 +59,42 @@ export default function AuthModal({ isOpen, onClose }) {
     setName("Alex Rivera");
     setEmail(`demo_${Date.now()}@example.com`);
     setPassword("DemoPassword123!");
-    setIsRegister(true);
-    setError("");
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/50 backdrop-blur-xs">
-      <div className="relative w-full max-w-md bg-white border border-zinc-200 rounded-2xl shadow-xl overflow-hidden p-6 sm:p-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1B1F3B]/60 backdrop-blur-sm animate-subtle-fade">
+      <div className="relative w-full max-w-md bg-white border border-[#E5DFD7] rounded-2xl shadow-2xl overflow-hidden p-6 sm:p-8 text-[#1B1F3B]">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition"
+          className="absolute top-4 right-4 p-1.5 rounded-lg text-[#1B1F3B]/50 hover:text-[#1B1F3B] hover:bg-[#EAE4DC] transition"
         >
           <X className="w-4 h-4" />
         </button>
 
         {/* Modal Header */}
         <div className="text-center mb-6">
-          <div className="w-10 h-10 rounded-xl bg-zinc-100 border border-zinc-200 text-zinc-900 flex items-center justify-center mx-auto mb-3">
-            <User className="w-5 h-5 text-zinc-800" />
+          <div className="w-10 h-10 rounded-xl bg-[#6B3074] text-white flex items-center justify-center mx-auto mb-3 shadow-soft">
+            <User className="w-5 h-5 text-white" />
           </div>
-          <h3 className="text-xl font-semibold text-zinc-900 tracking-tight">
+          <h3 className="text-xl font-bold text-[#1B1F3B] tracking-tight">
             {isRegister ? "Create an Account" : "Sign In to Your Workspace"}
           </h3>
-          <p className="text-xs text-zinc-500 mt-1">
+          <p className="text-xs text-[#1B1F3B]/70 mt-1">
             Build and publish clean, recruiter-tailored engineering portfolios.
           </p>
         </div>
 
         {/* Segmented Mode Selector */}
-        <div className="grid grid-cols-2 p-1 bg-zinc-100 rounded-xl mb-5 border border-zinc-200/80">
+        <div className="grid grid-cols-2 p-1 bg-[#FAF7F4] rounded-xl mb-5 border border-[#E5DFD7]">
           <button
             type="button"
             onClick={() => handleTabSwitch(false)}
             className={`py-1.5 text-xs font-medium rounded-lg transition ${
               !isRegister
-                ? "bg-white text-zinc-900 shadow-xs font-semibold"
-                : "text-zinc-600 hover:text-zinc-900"
+                ? "bg-[#6B3074] text-white font-semibold shadow-xs"
+                : "text-[#1B1F3B]/60 hover:text-[#1B1F3B]"
             }`}
           >
             Sign In
@@ -106,8 +104,8 @@ export default function AuthModal({ isOpen, onClose }) {
             onClick={() => handleTabSwitch(true)}
             className={`py-1.5 text-xs font-medium rounded-lg transition ${
               isRegister
-                ? "bg-white text-zinc-900 shadow-xs font-semibold"
-                : "text-zinc-600 hover:text-zinc-900"
+                ? "bg-[#6B3074] text-white font-semibold shadow-xs"
+                : "text-[#1B1F3B]/60 hover:text-[#1B1F3B]"
             }`}
           >
             Create Account
@@ -118,18 +116,18 @@ export default function AuthModal({ isOpen, onClose }) {
         <button
           type="button"
           onClick={fillDemoAccount}
-          className="w-full mb-5 py-2 px-3 rounded-lg bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 text-xs font-medium text-zinc-700 flex items-center justify-center space-x-2 transition"
+          className="w-full mb-5 py-2 px-3 rounded-lg bg-[#FAF7F4] hover:bg-[#EAE4DC] border border-[#DCD5CB] text-xs font-medium text-[#1B1F3B] flex items-center justify-center space-x-2 transition"
         >
-          <Sparkles className="w-3.5 h-3.5 text-zinc-600" />
+          <Sparkles className="w-3.5 h-3.5 text-[#6B3074]" />
           <span>Quick 1-Click Demo Credentials</span>
         </button>
 
         <div className="relative flex items-center justify-center mb-5">
-          <div className="border-t border-zinc-200 w-full"></div>
-          <span className="bg-white px-2.5 text-[11px] uppercase tracking-wider text-zinc-400 font-mono">
+          <div className="border-t border-[#E5DFD7] w-full"></div>
+          <span className="bg-white px-2.5 text-[11px] uppercase tracking-wider text-[#1B1F3B]/50 font-mono">
             Or credentials
           </span>
-          <div className="border-t border-zinc-200 w-full"></div>
+          <div className="border-t border-[#E5DFD7] w-full"></div>
         </div>
 
         {error && (
@@ -142,40 +140,40 @@ export default function AuthModal({ isOpen, onClose }) {
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           {isRegister && (
             <div>
-              <label className="block text-zinc-700 font-medium mb-1.5">Full Name</label>
+              <label className="block text-[#1B1F3B] font-semibold mb-1.5">Full Name</label>
               <div className="relative">
-                <User className="absolute left-3 top-2.5 w-4 h-4 text-zinc-400" />
+                <User className="absolute left-3 top-2.5 w-4 h-4 text-[#1B1F3B]/40" />
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Alex Rivera"
-                  className="w-full pl-9 pr-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition"
+                  className="w-full pl-9 pr-3 py-2 bg-white border border-[#DCD5CB] rounded-lg text-[#1B1F3B] placeholder-[#1B1F3B]/40 focus:outline-hidden focus:border-[#6B3074] focus:ring-1 focus:ring-[#6B3074] transition"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-zinc-700 font-medium mb-1.5">Email Address</label>
+            <label className="block text-[#1B1F3B] font-semibold mb-1.5">Email Address</label>
             <div className="relative">
-              <Mail className="absolute left-3 top-2.5 w-4 h-4 text-zinc-400" />
+              <Mail className="absolute left-3 top-2.5 w-4 h-4 text-[#1B1F3B]/40" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
-                className="w-full pl-9 pr-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition"
+                className="w-full pl-9 pr-3 py-2 bg-white border border-[#DCD5CB] rounded-lg text-[#1B1F3B] placeholder-[#1B1F3B]/40 focus:outline-hidden focus:border-[#6B3074] focus:ring-1 focus:ring-[#6B3074] transition"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-zinc-700 font-medium mb-1.5">Password</label>
+            <label className="block text-[#1B1F3B] font-semibold mb-1.5">Password</label>
             <div className="relative">
-              <Lock className="absolute left-3 top-2.5 w-4 h-4 text-zinc-400" />
+              <Lock className="absolute left-3 top-2.5 w-4 h-4 text-[#1B1F3B]/40" />
               <input
                 type="password"
                 required
@@ -183,7 +181,7 @@ export default function AuthModal({ isOpen, onClose }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 6 characters"
-                className="w-full pl-9 pr-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition"
+                className="w-full pl-9 pr-3 py-2 bg-white border border-[#DCD5CB] rounded-lg text-[#1B1F3B] placeholder-[#1B1F3B]/40 focus:outline-hidden focus:border-[#6B3074] focus:ring-1 focus:ring-[#6B3074] transition"
               />
             </div>
           </div>
@@ -191,20 +189,20 @@ export default function AuthModal({ isOpen, onClose }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-2 py-2.5 px-4 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-medium transition shadow-xs disabled:opacity-50"
+            className="w-full mt-2 py-2.5 px-4 rounded-lg bg-[#FF6B6B] hover:bg-[#FA5252] text-white font-semibold transition shadow-coral disabled:opacity-50"
           >
             {loading ? "Processing..." : isRegister ? "Create Account" : "Sign In"}
           </button>
         </form>
 
-        <div className="mt-5 text-center text-xs text-zinc-500">
+        <div className="mt-5 text-center text-xs text-[#1B1F3B]/70">
           {isRegister ? (
             <p>
               Already registered?{" "}
               <button
                 type="button"
                 onClick={() => handleTabSwitch(false)}
-                className="text-zinc-900 font-semibold hover:underline"
+                className="text-[#6B3074] font-semibold hover:underline"
               >
                 Sign In
               </button>
@@ -215,7 +213,7 @@ export default function AuthModal({ isOpen, onClose }) {
               <button
                 type="button"
                 onClick={() => handleTabSwitch(true)}
-                className="text-zinc-900 font-semibold hover:underline"
+                className="text-[#6B3074] font-semibold hover:underline"
               >
                 Create Account
               </button>
@@ -227,4 +225,3 @@ export default function AuthModal({ isOpen, onClose }) {
     </div>
   );
 }
-

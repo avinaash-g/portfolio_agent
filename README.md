@@ -112,6 +112,8 @@ echo "GEMINI_API_KEY=your_key_here" >> backend/.env
 
 # Run FastAPI backend server (port 8000)
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+venv\Scripts\activate
+.\venv\Scripts\Activate.ps1  
 ```
 
 #### 2. Frontend Setup (in a separate terminal)

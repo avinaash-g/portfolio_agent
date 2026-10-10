@@ -25,6 +25,7 @@ def get_db():
 
 def init_db():
     from sqlalchemy import text
+    import app.models  # ensure models are registered on Base
     Base.metadata.create_all(bind=engine)
     new_cols = [
         ("theme_id", "VARCHAR(50) DEFAULT 'emerald'"),
