@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8000/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://portfolio-agent-backend-8b2p.onrender.com';
 
 function getAuthHeader() {
   const token = localStorage.getItem("portfolio_agent_token");
