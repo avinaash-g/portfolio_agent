@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://portfolio-agent-backend-8b2p.onrender.com';
+const API_BASE_URL_URL = import.meta.env.VITE_API_BASE_URL_URL || 'https://portfolio-agent-backend-8b2p.onrender.com';
 
 function getAuthHeader() {
   const token = localStorage.getItem("portfolio_agent_token");
@@ -6,7 +6,7 @@ function getAuthHeader() {
 }
 
 async function request(endpoint, options = {}) {
-  const url = `${API_BASE}${endpoint}`;
+  const url = `${API_BASE_URL_URL}${endpoint}`;
   const headers = {
     "Content-Type": "application/json",
     ...getAuthHeader(),
@@ -84,7 +84,7 @@ export const api = {
 
   // --- Export & Preview URLs ---
   getPreviewUrl: (portfolioId, template = "clean", theme = null, accent = null, layout = null) => {
-    let url = `${API_BASE}/portfolios/${portfolioId}/preview?template=${template}`;
+    let url = `${API_BASE_URL}/portfolios/${portfolioId}/preview?template=${template}`;
     if (layout) url += `&layout=${encodeURIComponent(layout)}`;
     if (theme) url += `&theme=${encodeURIComponent(theme)}`;
     if (accent) url += `&accent=${encodeURIComponent(accent)}`;
@@ -92,7 +92,7 @@ export const api = {
     return url;
   },
   getExportUrl: (portfolioId, template = "clean", theme = null, accent = null, layout = null) => {
-    let url = `${API_BASE}/portfolios/${portfolioId}/export?template=${template}`;
+    let url = `${API_BASE_URL}/portfolios/${portfolioId}/export?template=${template}`;
     if (layout) url += `&layout=${encodeURIComponent(layout)}`;
     if (theme) url += `&theme=${encodeURIComponent(theme)}`;
     if (accent) url += `&accent=${encodeURIComponent(accent)}`;
@@ -111,7 +111,7 @@ export const api = {
 
   // --- SSE Event Stream ---
   connectSSE: (portfolioId, runId, onMessage, onError) => {
-    const url = `${API_BASE}/portfolios/${portfolioId}/runs/${runId}/events`;
+    const url = `${API_BASE_URL}/portfolios/${portfolioId}/runs/${runId}/events`;
     const eventSource = new EventSource(url);
 
     eventSource.onmessage = (event) => {
