@@ -154,7 +154,7 @@ portfolio_agent/
 
 ## Live Demo
 
-- **Frontend:** https://portfolio-agent.vercel.app
+- **Frontend:**https://portfolio-agent-henna-six.vercel.app
 - **API Documentation:** https://portfolio-agent-backend-8b2p.onrender.com/docs
 
 ## License
